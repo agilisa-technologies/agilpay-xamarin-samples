@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="paynet_xamarin_sample.Views.CardRegistrationExample"
+             Title="{Binding Title}"
+             Shell.NavBarIsVisible="False">
+
+    <StackLayout Spacing="20">
+        <StackLayout x:Name="content" Padding="15" IsVisible="False">
+            <Label Text="{Binding Text}" FontSize="Medium" />
+            <Label Text="{Binding Description}" FontSize="Small" />
+
+            <Button Text="Trigger Card Registration" Command="{Binding TriggerCardRegistration}" />
+        </StackLayout>
+
+        <WebView x:Name="webView" Source="https://stage.agilpay.net/webpay6" WidthRequest="10000" HeightRequest="1000" Navigated="WebView_Navigated" />
+    </StackLayout>
+    
+</ContentPage>
