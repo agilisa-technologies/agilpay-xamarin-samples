@@ -14,7 +14,7 @@ namespace paynet_xamarin_sample.Services
         {
             items = new List<Item>()
             {
-                new Item { Id = Guid.NewGuid().ToString(), Text = "Credit Card Registration", Description="Registering a Credit Card.", ExampleName = "CardRegistrationExample" },
+                new Item { Id = Guid.NewGuid().ToString(), Text = "Credit Card Registration Example", Description="Registering a Credit Card.", ExampleName = "CardRegistrationExample" },
                 new Item { Id = Guid.NewGuid().ToString(), Text = "Card List", Description="Getting a list of Credit Cards and their respective Tokens.", ExampleName = "CardListExample" },
                 new Item { Id = Guid.NewGuid().ToString(), Text = "Process a Payment", Description="Example on how to use a Token to process a payment.", ExampleName = "ProcessPaymentExample" },
             };
