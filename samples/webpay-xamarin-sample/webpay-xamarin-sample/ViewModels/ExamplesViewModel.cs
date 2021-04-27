@@ -8,37 +8,34 @@ using Xamarin.Forms;
 
 namespace webpay_xamarin_sample.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class ExamplesViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        private Example _selectedItem;
 
-        public ObservableCollection<Item> Items { get; }
-        public Command LoadItemsCommand { get; }
-        public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public ObservableCollection<Example> Examples { get; }
+        public Command LoadExamplesCommand { get; }
+        public Command<Example> ExampleTapped { get; }
 
-        public ItemsViewModel()
+        public ExamplesViewModel()
         {
             Title = "Webpay Xamarin Examples";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            Examples = new ObservableCollection<Example>();
+            LoadExamplesCommand = new Command(async () => await ExecuteLoadExamplesCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
-
-            AddItemCommand = new Command(OnAddItem);
+            ExampleTapped = new Command<Example>(OnItemSelected);
         }
 
-        async Task ExecuteLoadItemsCommand()
+        async Task ExecuteLoadExamplesCommand()
         {
             IsBusy = true;
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
+                Examples.Clear();
+                var items = await DataStore.GetItemAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    Examples.Add(item);
                 }
             }
             catch (Exception ex)
@@ -57,7 +54,7 @@ namespace webpay_xamarin_sample.ViewModels
             SelectedItem = null;
         }
 
-        public Item SelectedItem
+        public Example SelectedItem
         {
             get => _selectedItem;
             set
@@ -67,18 +64,13 @@ namespace webpay_xamarin_sample.ViewModels
             }
         }
 
-        private async void OnAddItem(object obj)
-        {
-            await Shell.Current.GoToAsync(nameof(NewItemPage));
-        }
-
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(Example item)
         {
             if (item == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{item.ExampleName}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+            await Shell.Current.GoToAsync($"{item.ExampleName}?{nameof(ExampleDetailViewModel.ItemId)}={item.Id}");
         }
     }
 }

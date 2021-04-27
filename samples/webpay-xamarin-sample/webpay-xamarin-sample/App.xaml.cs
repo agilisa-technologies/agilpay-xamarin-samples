@@ -13,7 +13,14 @@ namespace webpay_xamarin_sample
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            DependencyService.Register<ExampleDataStore>();
+            DependencyService.Register<ConfigService>();
+
+            var config = DependencyService.Get<IConfigService>();
+            config.ClientId = "API-001";
+            config.UserId = "User-47748";
+            config.Identification = "00520201129";
+
             MainPage = new AppShell();
         }
 

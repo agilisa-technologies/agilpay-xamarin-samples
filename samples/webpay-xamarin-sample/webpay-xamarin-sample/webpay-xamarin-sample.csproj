@@ -11,14 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\ProcessPaymentExample.xaml.cs">
-      <DependentUpon>ProcessPaymentExample.xaml</DependentUpon>
+    <Compile Update="Views\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\CardListExample.xaml.cs">
-      <DependentUpon>CardListExample.xaml</DependentUpon>
+    <Compile Update="Views\ExamplesPage.xaml.cs">
+      <DependentUpon>ExamplesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\CardRegistrationExample.xaml.cs">
-      <DependentUpon>CardRegistrationExample.xaml</DependentUpon>
+    <Compile Update="Views\ExampleDetailPage.xaml.cs">
+      <DependentUpon>ExampleDetailPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

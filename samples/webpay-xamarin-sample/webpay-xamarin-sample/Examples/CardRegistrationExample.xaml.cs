@@ -1,5 +1,4 @@
-﻿using webpay_xamarin_sample.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,28 +6,29 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using webpay_xamarin_sample.Services;
+using webpay_xamarin_sample.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 
-namespace webpay_xamarin_sample.Views
+namespace webpay_xamarin_sample.Examples
 {
     public partial class CardRegistrationExample : ContentPage
     {
-        public string Title { get; set; }
-        public string Text { get; set; }
-        public string Description { get; set; }
+        private IConfigService _config => DependencyService.Get<IConfigService>();
         public ICommand TriggerCardRegistration { get; set; }
+
+        public string ClientId => _config.ClientId;
+        public string UserId => _config.UserId;
+        public string Identification => _config.Identification;
 
         public CardRegistrationExample()
         {
             TriggerCardRegistration = new Command(CardRegistration);
-            Title = "Card Registration Example";
-            Text = "Credit Card Registration Example";
-            Description = "Registering a Credit Card.";
 
             InitializeComponent();
 
-            BindingContext = this;
+            BindingContext = new ExampleDetailViewModel();
             
             content.IsVisible = true;
             webView.IsVisible = false;
@@ -42,9 +42,10 @@ namespace webpay_xamarin_sample.Views
                 content.IsVisible = false;
                 activityIndicator.IsVisible = true;
                 activityIndicator.IsRunning = true;
+                resultContainer.IsVisible = false;
                 Shell.SetNavBarIsVisible(this, false);
 
-                await test();
+                await StartWebViewFlow();
             }
             catch (Exception ex)
             {
@@ -57,16 +58,22 @@ namespace webpay_xamarin_sample.Views
             }
         }
 
-        public async Task test()
+        /// <summary>
+        /// In this method the WebView is set up for registration fo a credit card.
+        /// </summary>
+        /// <returns></returns>
+        public async Task StartWebViewFlow()
         {
             var requestUri = "https://stage.agilpay.net/webpay6/Register?culture=en";
+
+            // Set the formFileds that will be added to the POST request.
             var formFields = new Dictionary<string, object>
             {
                 { "IsApayment", false },
                 { "Invoice", "20002" },
-                { "SiteId", "API-001" },
-                { "UserId", "User-47748" },
-                { "Identification", "00520201129" },
+                { "SiteId", _config.ClientId },
+                { "UserId", _config.UserId },
+                { "Identification", _config.Identification },
                 { "Names", "John Smith" },
                 { "Email", "j.smith@gmail.com" },
                 { "Detail", "{\"Payments\":[{\"Items\":[{\"Description\":\"test\",\"Quantity\":\"1\",\"Amount\":100,\"Tax\":0}],\"MerchantKey\":\"TEST-001\",\"Service\":\"TBW9CVl7\",\"MerchantName\":\"Oriental Bank\",\"Description\":\"test\",\"Amount\":100,\"Tax\":0,\"Currency\":\"840\"}]}" },
@@ -75,11 +82,15 @@ namespace webpay_xamarin_sample.Views
                 { "NoHeader", 1 },
                 { "BodyBackground", "1" },
                 { "PrimaryColor", "1" },
+                { "ShowWallet", false } // Hides the wallet (current cards) when registering a card.
             };
 
+            // We get the auth hash by a web request.
             var authHash = await GetHash(formFields);
             formFields.Add("Authentication", authHash);
 
+            // Generate HTML that will be initially rendered.
+            // Notice the javascript function "submit" is called as soon as the js code is parsed on the WebView.
             var formElements = string.Join("",
                 formFields.Select(
                   p => string.Format(@"<input type=""hidden"" value=""{0}"" name=""{1}"">",
@@ -100,6 +111,8 @@ namespace webpay_xamarin_sample.Views
                 </body>
             </html>", requestUri, formElements);
 
+            // We listen to the Navigated event in order to identify when we reach the end of our flow.
+            // We know we are at the end by matching to the `ReturnURL` and `SuccessURL` specified above.
             webView.Navigated += (object ss, WebNavigatedEventArgs ee) =>
             {
                 if (ee.Url.Contains("success"))
@@ -122,6 +135,8 @@ namespace webpay_xamarin_sample.Views
                 }
             };
 
+            // This event handler is used to know when the page initially loads.
+            // Notice it self removes itself after the first event call.
             EventHandler<WebNavigatedEventArgs> initialLoad = null;
             initialLoad = (s, e) =>
             {
@@ -133,43 +148,57 @@ namespace webpay_xamarin_sample.Views
             };
             webView.Navigated += initialLoad;
 
-            //webView.Navigating += (object ss, WebNavigatingEventArgs ee) =>
-            //{
-
-            //};
-
+            // We create the HtmlWebViewSource and pass in the HTML we've generated above.
             var htmlSource = new HtmlWebViewSource();
             htmlSource.Html = html;
             webView.Source = htmlSource;
         }
 
+        /// <summary>
+        /// This method requests the Authentication HASH by consuming an HTTP endpoint.
+        /// </summary>
+        /// <param name="formFields"></param>
+        /// <returns></returns>
         private async Task<string> GetHash(Dictionary<string, object> formFields)
         {
-            string responseBody = "";
-            try
-            {
-                var httpClient = new HttpClient();
+            var httpClient = new HttpClient();
 
-                var content = new MultipartFormDataContent("jfdskljfsd");
-                content.Add(new StringContent(formFields["SiteId"].ToString()), "SiteId");
-                content.Add(new StringContent(formFields["UserId"].ToString()), "UserId");
-                content.Add(new StringContent(formFields["Identification"].ToString()), "Identification");
-                content.Add(new StringContent(formFields["Detail"].ToString()), "Detail");
+            var content = new MultipartFormDataContent("jfdskljfsd");
+            content.Add(new StringContent(formFields["SiteId"].ToString()), "SiteId");
+            content.Add(new StringContent(formFields["UserId"].ToString()), "UserId");
+            content.Add(new StringContent(formFields["Identification"].ToString()), "Identification");
+            content.Add(new StringContent(formFields["Detail"].ToString()), "Detail");
 
-                HttpResponseMessage response = await httpClient.PostAsync("https://stage.agilpay.net/webpay6/api/Hash", content);
-                responseBody = await response.Content.ReadAsStringAsync();
-                response.EnsureSuccessStatusCode();
-                return responseBody.Trim('\\').Trim('"');
-            }
-            catch (Exception ex)
-            {
-                return $"ERR:42 | {responseBody} | {ex.Message}";
-            }
+            HttpResponseMessage response = await httpClient.PostAsync("https://stage.agilpay.net/webpay6/api/Hash", content);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            return responseBody.Trim('\\').Trim('"');
         }
 
         private void WebView_Navigated(object sender, WebNavigatedEventArgs e)
         {
             
+        }
+
+        /// <summary>
+        /// This method enriches the back button behavior.
+        /// When the webView is visible (the webView flow is active), the back button hides
+        /// the webView but doesn't do a back to the navigation on the Shell/Xamarin navigation stack.
+        /// </summary>
+        /// <returns></returns>
+        protected override bool OnBackButtonPressed()
+        {
+            if (webView.IsVisible)
+            {
+                content.IsVisible = true;
+                webView.IsVisible = false;
+                Shell.SetNavBarIsVisible(this, true);
+                return true;
+            }
+            else
+            {
+                return base.OnBackButtonPressed();
+            }
         }
     }
 }

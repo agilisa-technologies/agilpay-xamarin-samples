@@ -10,7 +10,7 @@ namespace webpay_xamarin_sample.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IItemsDataStore<Example> DataStore => DependencyService.Get<IItemsDataStore<Example>>();
 
         bool isBusy = false;
         public bool IsBusy

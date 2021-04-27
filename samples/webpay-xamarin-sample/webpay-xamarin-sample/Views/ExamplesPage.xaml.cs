@@ -12,15 +12,15 @@ using Xamarin.Forms.Xaml;
 
 namespace webpay_xamarin_sample.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class ExamplesPage : ContentPage
     {
-        ItemsViewModel _viewModel;
+        ExamplesViewModel _viewModel;
 
-        public ItemsPage()
+        public ExamplesPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = _viewModel = new ExamplesViewModel();
         }
 
         protected override void OnAppearing()

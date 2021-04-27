@@ -3,6 +3,7 @@ using webpay_xamarin_sample.Views;
 using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
+using webpay_xamarin_sample.Examples;
 
 namespace webpay_xamarin_sample
 {
@@ -11,8 +12,9 @@ namespace webpay_xamarin_sample
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(ExampleDetailPage), typeof(ExampleDetailPage));
+            Routing.RegisterRoute(nameof(ExamplesPage), typeof(ExamplesPage));
+            //Routing.RegisterRoute(nameof(NewExamplePage), typeof(NewExamplePage));
             Routing.RegisterRoute(nameof(CardRegistrationExample), typeof(CardRegistrationExample));
             Routing.RegisterRoute(nameof(CardListExample), typeof(CardListExample));
             Routing.RegisterRoute(nameof(ProcessPaymentExample), typeof(ProcessPaymentExample));

@@ -7,7 +7,7 @@ using Xamarin.Forms;
 namespace webpay_xamarin_sample.ViewModels
 {
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
-    public class ItemDetailViewModel : BaseViewModel
+    public class ExampleDetailViewModel : BaseViewModel
     {
         private string itemId;
         private string text;
@@ -45,7 +45,7 @@ namespace webpay_xamarin_sample.ViewModels
             {
                 var item = await DataStore.GetItemAsync(itemId);
                 Id = item.Id;
-                Text = item.Text;
+                Text = item.Title;
                 Description = item.Description;
             }
             catch (Exception)

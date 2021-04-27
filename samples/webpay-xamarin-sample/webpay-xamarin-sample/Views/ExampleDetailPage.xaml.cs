@@ -4,12 +4,12 @@ using Xamarin.Forms;
 
 namespace webpay_xamarin_sample.Views
 {
-    public partial class ItemDetailPage : ContentPage
+    public partial class ExampleDetailPage : ContentPage
     {
-        public ItemDetailPage()
+        public ExampleDetailPage()
         {
             InitializeComponent();
-            BindingContext = new ItemDetailViewModel();
+            BindingContext = new ExampleDetailViewModel();
         }
     }
 }
