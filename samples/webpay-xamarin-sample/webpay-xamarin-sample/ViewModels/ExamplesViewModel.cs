@@ -18,7 +18,7 @@ namespace webpay_xamarin_sample.ViewModels
 
         public ExamplesViewModel()
         {
-            Title = "Webpay Xamarin Examples";
+            Title = "AgilPay Xamarin Examples";
             Examples = new ObservableCollection<Example>();
             LoadExamplesCommand = new Command(async () => await ExecuteLoadExamplesCommand());
 
