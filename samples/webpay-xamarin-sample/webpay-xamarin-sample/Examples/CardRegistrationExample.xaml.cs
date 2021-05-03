@@ -126,7 +126,7 @@ namespace webpay_xamarin_sample.Examples
                     Shell.SetNavBarIsVisible(this, true);
 
                     var token = await GetTokenAfterRegistration();
-                    result.Text += "\n\n Token:\n" + token;
+                    result.Text += "\n\nToken:\n" + token;
                 }
                 else if (ee.Url.ToLower().Contains("cancel"))
                 {
