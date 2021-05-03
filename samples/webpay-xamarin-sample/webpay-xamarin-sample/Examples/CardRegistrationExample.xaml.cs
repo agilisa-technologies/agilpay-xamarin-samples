@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -77,8 +78,8 @@ namespace webpay_xamarin_sample.Examples
                 { "Names", "John Smith" },
                 { "Email", "j.smith@gmail.com" },
                 { "Detail", "{\"Payments\":[{\"Items\":[{\"Description\":\"test\",\"Quantity\":\"1\",\"Amount\":100,\"Tax\":0}],\"MerchantKey\":\"TEST-001\",\"Service\":\"TBW9CVl7\",\"MerchantName\":\"Oriental Bank\",\"Description\":\"test\",\"Amount\":100,\"Tax\":0,\"Currency\":\"840\"}]}" },
-                { "ReturnURL", "cancel" },
-                { "SuccessURL", "success" },
+                { "ReturnURL", "https://stage.agilpay.net/webpay6/Cancel" },
+                { "SuccessURL", "https://stage.agilpay.net/webpay6/Success" },
                 { "NoHeader", 1 },
                 { "BodyBackground", "1" },
                 { "PrimaryColor", "1" },
@@ -113,9 +114,9 @@ namespace webpay_xamarin_sample.Examples
 
             // We listen to the Navigated event in order to identify when we reach the end of our flow.
             // We know we are at the end by matching to the `ReturnURL` and `SuccessURL` specified above.
-            webView.Navigated += (object ss, WebNavigatedEventArgs ee) =>
+            webView.Navigated += async (object ss, WebNavigatedEventArgs ee) =>
             {
-                if (ee.Url.Contains("success"))
+                if (ee.Url.ToLower().Contains("success"))
                 {
                     result.Text = "Success";
                     resultContainer.IsVisible = true;
@@ -123,8 +124,11 @@ namespace webpay_xamarin_sample.Examples
                     content.IsVisible = true;
                     webView.IsVisible = false;
                     Shell.SetNavBarIsVisible(this, true);
+
+                    var token = await GetTokenAfterRegistration();
+                    result.Text += "\n\nToken:\n" + token;
                 }
-                else if (ee.Url.Contains("cancel"))
+                else if (ee.Url.ToLower().Contains("cancel"))
                 {
                     result.Text = "Cancelled";
                     resultContainer.IsVisible = true;
@@ -173,6 +177,59 @@ namespace webpay_xamarin_sample.Examples
             var responseBody = await response.Content.ReadAsStringAsync();
             response.EnsureSuccessStatusCode();
             return responseBody.Trim('\\').Trim('"');
+        }
+
+        /// <summary>
+        /// Gets the token from the success page by calling the mobile_callback javascipt function which returns the
+        /// JSON document with the result information. More details at: TODO: Document this.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<string> GetTokenAfterRegistration()
+        {
+
+            var registrationResult = await webView.EvaluateJavaScriptAsync("mobile_callback()");
+            // Example of the document returned by the mobile_callback() javascript method.
+            //
+            //{
+            //    "Response": {
+            //        "MerchantKey": "API-001",
+            //        "Service": "TBW9CVl7",
+            //        "MerchantName": "API TESTS",
+            //        "Description": "test",
+            //        "Amount": "100",
+            //        "Currency": "840",
+            //        "UseRecurring": null,
+            //        "RecurringPeriod": "0",
+            //        "RecurringFrequency": "0",
+            //        "RecurringDay": "0",
+            //        "RecurringQty": "0",
+            //        "RecurringAmount": "0",
+            //        "RecurringFromDate": null,
+            //        "RecurringToDate": null,
+            //        "ResponseCode": "00",
+            //        "Message": "Success",
+            //        "PAN": null,
+            //        "Token": "4341299b5f2eaac55459d8b4910bb14380558"
+            //    }
+            //}
+
+            // In this example in particular the returned JSON payload
+            // had some unwanted characters. This will probably be fixed
+            // in the future, but for now we need to clean it up a bit before parsing.
+            var cleanedRegistrationResult = registrationResult
+                    .Replace("\\n", "")
+                    .Replace("\n", "")
+                    .Replace("\\", "")
+                    .Replace(" ", "");
+
+            // We parse the returned JSON document string. This can be done
+            // any way desired. It's just a standard JSON Deserialization.
+            var parsed = JObject.Parse(cleanedRegistrationResult);
+            var response = (JObject)parsed["Response"];
+            var token = (string)response["Token"];
+
+            // And we return the token.
+            return token;
         }
 
         private void WebView_Navigated(object sender, WebNavigatedEventArgs e)
