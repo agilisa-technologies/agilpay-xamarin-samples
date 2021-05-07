@@ -16,6 +16,7 @@ namespace webpay_xamarin_sample
             Routing.RegisterRoute(nameof(ExamplesPage), typeof(ExamplesPage));
             //Routing.RegisterRoute(nameof(NewExamplePage), typeof(NewExamplePage));
             Routing.RegisterRoute(nameof(CardRegistrationExample), typeof(CardRegistrationExample));
+            Routing.RegisterRoute(nameof(CardRegistrationOAuthExample), typeof(CardRegistrationOAuthExample));
             Routing.RegisterRoute(nameof(CardListExample), typeof(CardListExample));
             Routing.RegisterRoute(nameof(ProcessPaymentExample), typeof(ProcessPaymentExample));
         }

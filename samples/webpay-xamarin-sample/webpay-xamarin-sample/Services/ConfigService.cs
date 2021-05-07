@@ -7,6 +7,7 @@ namespace webpay_xamarin_sample.Services
     class ConfigService : IConfigService
     {
         public string ClientId { get; set; }
+        public string ClientSecret { get; set;  }
 
         public string UserId { get; set; }
 

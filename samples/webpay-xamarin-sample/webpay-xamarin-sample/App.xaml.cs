@@ -18,6 +18,7 @@ namespace webpay_xamarin_sample
 
             var config = DependencyService.Get<IConfigService>();
             config.ClientId = "API-001";
+            config.ClientSecret = "Dynapay";
             config.UserId = "User-47748";
             config.Identification = "00520201129";
 

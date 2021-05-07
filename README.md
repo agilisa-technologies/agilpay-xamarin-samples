@@ -17,3 +17,10 @@ In order to test this in a device you can either use the credentials provided by
 See:
 - [CardRegistrationExample.xaml](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationExample.xaml)
 - [CardRegistrationExample.xaml.cs](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationExample.xaml.cs)
+
+### Register Credit Card Example via WebView (OAuth Flow)
+
+See:
+
+- [CardRegistrationOAuthExample.xaml](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationOAuthExample.xaml)
+- [CardRegistrationOAuthExample.xaml.cs](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationOAuthExample.xaml.cs)

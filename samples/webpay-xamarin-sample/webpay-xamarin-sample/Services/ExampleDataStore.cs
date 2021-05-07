@@ -15,6 +15,7 @@ namespace webpay_xamarin_sample.Services
             items = new List<Example>()
             {
                 new Example { Id = Guid.NewGuid().ToString(), Title = "Credit Card Registration Example", Description="Registering a Credit Card.", ExampleName = "CardRegistrationExample" },
+                new Example { Id = Guid.NewGuid().ToString(), Title = "Credit Card Registration Example (OAuth Flow)", Description="Registering a Credit Card. (New OAuth flow).", ExampleName = "CardRegistrationOAuthExample" },
                 new Example { Id = Guid.NewGuid().ToString(), Title = "Card List", Description="Getting a list of Credit Cards and their respective Tokens.", ExampleName = "CardListExample" },
                 new Example { Id = Guid.NewGuid().ToString(), Title = "Process a Payment", Description="Example on how to use a Token to process a payment.", ExampleName = "ProcessPaymentExample" },
             };
