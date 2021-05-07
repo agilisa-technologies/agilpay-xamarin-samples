@@ -15,12 +15,12 @@ In order to test this in a device you can either use the credentials provided by
 ### Register Credit Card Example via WebView
 
 See:
-- [CardRegistrationExample.xaml](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationExample.xaml)
-- [CardRegistrationExample.xaml.cs](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationExample.xaml.cs)
+- [CardRegistrationExample.xaml](samples/agilpay-xamarin-forms-sample/agilpay-xamarin-forms-sample/Examples/CardRegistrationExample.xaml)
+- [CardRegistrationExample.xaml.cs](samples/agilpay-xamarin-forms-sample/agilpay-xamarin-forms-sample/Examples/CardRegistrationExample.xaml.cs)
 
 ### Register Credit Card Example via WebView (OAuth Flow)
 
 See:
 
-- [CardRegistrationOAuthExample.xaml](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationOAuthExample.xaml)
-- [CardRegistrationOAuthExample.xaml.cs](samples/webpay-xamarin-sample/webpay-xamarin-sample/Examples/CardRegistrationOAuthExample.xaml.cs)
+- [CardRegistrationOAuthExample.xaml](samples/agilpay-xamarin-forms-sample/agilpay-xamarin-forms-sample/Examples/CardRegistrationOAuthExample.xaml)
+- [CardRegistrationOAuthExample.xaml.cs](samples/agilpay-xamarin-forms-sample/agilpay-xamarin-forms-sample/Examples/CardRegistrationOAuthExample.xaml.cs)
