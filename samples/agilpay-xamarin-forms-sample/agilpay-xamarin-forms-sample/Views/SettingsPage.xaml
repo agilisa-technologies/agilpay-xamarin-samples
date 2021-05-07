@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:agilpay_xamarin_forms_sample.ViewModels"
+             x:Class="agilpay_xamarin_forms_sample.Views.SettingsPage"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="Fill" IsVisible="False">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <ContentView Padding="0,20,0,5" VerticalOptions="FillAndExpand">
+                    <Image Source="dynamics_logo.png" VerticalOptions="Center" HeightRequest="100" />
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+        <ScrollView Grid.Row="1">
+            <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
+                <Label Text="AgilPay Xamarin Examples" FontSize="Title" />
+                <Label Text="Examples on how to implement and integrate with AgilPay." FontSize="16" Padding="0,0,0,0"/>
+
+                <Label Text="Configuration" FontSize="Title" Margin="0,15,0,0" />
+                <FlexLayout Direction="Column">
+                    <Label Text="Client ID" />
+                    <Entry Text="{Binding ClientId}" Margin="0,10" />
+
+                    <Label Text="Client Secret" />
+                    <Entry Text="{Binding ClientSecret}" Margin="0,10" />
+
+                    <Label Text="User ID" />
+                    <Entry Text="{Binding UserId}" Margin="0,10" />
+
+                    <Label Text="Identification" />
+                    <Entry Text="{Binding Identification}" Margin="0,10" />
+                </FlexLayout>
+
+                <Label FontSize="16" Padding="0,15,0,0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Learn more at "/>
+                                <Span Text="https://github.com/agilisa-technologies/webpay-xamarin-samples" FontAttributes="Bold"/>
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button Margin="0,10,0,0" Text="Go to Samples"
+                        Command="{Binding GoToSamples}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White" />
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="agilpay_xamarin_forms_sample.Examples.CardRegistrationExample"
+             Title="{Binding Title}"
+             x:Name="ThisPage">
+
+    <StackLayout Spacing="20">
+        <StackLayout x:Name="content" Padding="15" IsVisible="True">
+            <StackLayout Padding="0,10">
+                <Label Text="{Binding Text}" FontSize="Medium" />
+                <Label Text="{Binding Description}" FontSize="Small" />
+            </StackLayout>
+
+            <StackLayout>
+                <FlexLayout JustifyContent="SpaceAround" Padding="0,25,0,15">
+                    <StackLayout>
+                        <Label Grid.Row="0" Grid.Column="0" Text="ClientId" FontSize="Title" />
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Binding ClientId, Source={x:Reference ThisPage}}" />
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Grid.Row="0" Grid.Column="1" Text="UserId" FontSize="Title" />
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Binding UserId, Source={x:Reference ThisPage}}" />
+                    </StackLayout>
+
+                    <StackLayout>
+                        <Label Grid.Row="0" Grid.Column="2" Text="Identification" FontSize="Title" MinimumWidthRequest="2000" />
+                        <Label Grid.Row="1" Grid.Column="2" Text="{Binding Identification, Source={x:Reference ThisPage}}" />
+                    </StackLayout>
+                </FlexLayout>
+
+                <Button Text="Trigger Card Registration" Command="{Binding TriggerCardRegistration, Source={x:Reference ThisPage}}" Padding="50,0" />
+            </StackLayout>
+        </StackLayout>
+
+        <ActivityIndicator x:Name="activityIndicator" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" IsVisible="False" />
+
+        <StackLayout x:Name="resultContainer" Padding="15" IsVisible="False">
+            <Label Text="Result" FontSize="Large" />
+            <Label x:Name="result" />
+        </StackLayout>
+
+        <WebView x:Name="webView" Source="" WidthRequest="10000" HeightRequest="1000" Navigated="WebView_Navigated" IsVisible="False" />
+    </StackLayout>
+    
+</ContentPage>
